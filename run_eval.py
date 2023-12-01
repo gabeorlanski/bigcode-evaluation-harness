@@ -11,7 +11,7 @@ ACCEL_CMDS = [
     "../llm-code-understanding/configs/accelerate/simple_inference.yaml",
 ]
 
-
+CWD = Path(__file__).parent
 def make_harness_cmd(model: str, tasks: List[str], batch_size: int, kwargs: Dict):
     out = [
         "main.py",
@@ -33,7 +33,7 @@ def make_harness_cmd(model: str, tasks: List[str], batch_size: int, kwargs: Dict
 
 def launch_harness(model: str, tasks: List[str], batch_size: int, kwargs: Dict):
     cmd = make_harness_cmd(model, tasks, batch_size, kwargs)
-    proc = subprocess.run(cmd, check=True)
+    proc = subprocess.run(cmd,cwd=str(CWD), check=True)
     print(proc.stdout)
     return proc
 
@@ -41,6 +41,7 @@ def launch_harness(model: str, tasks: List[str], batch_size: int, kwargs: Dict):
 def main(args):
     run_name = args.name
     model = args.model
+    print(f"{CWD=}")
     print(f"Running Evaluation Harness for {run_name} with '{model}'")
     debug = args.debug
     base_kwargs = {}
