@@ -3,7 +3,9 @@ from pathlib import Path
 from typing import List, Dict
 import argparse
 import wandb
-
+import os 
+import sys
+from main import main as run_main
 ACCEL_CMDS = [
     "accelerate",
     "launch",
@@ -33,9 +35,8 @@ def make_harness_cmd(model: str, tasks: List[str], batch_size: int, kwargs: Dict
 
 def launch_harness(model: str, tasks: List[str], batch_size: int, kwargs: Dict):
     cmd = make_harness_cmd(model, tasks, batch_size, kwargs)
-    proc = subprocess.run(cmd,cwd=str(CWD), check=True)
-    print(proc.stdout)
-    return proc
+    sys.argv[1] = cmd
+    run_main()
 
 
 def main(args):
